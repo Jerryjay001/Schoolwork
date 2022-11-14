@@ -1,0 +1,141 @@
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Random;
+
+public class Tablozer {
+    JFrame f;
+    JTable t;
+
+    Tablozer() {
+        f = new JFrame();
+        f.setTitle("Decimal to Binary Tables");
+        String[][] data = {
+                {"1", "", "", ""},
+                {"2", "", "", ""},
+                {"3", "", "", ""},
+                {"4", "", "", ""},
+                {"5", "", "", ""},
+                {"6", "", "", ""},
+                {"7", "", "", ""},
+                {"8", "", "", ""},
+                {"9", "", "", ""},
+                {"10", "", "", ""},
+                {"11", "", "", ""},
+                {"12", "", "", ""},
+                {"13", "", "", ""},
+                {"14", "", "", ""},
+                {"15", "", "", ""},
+                {"16", "", "", ""},
+                {"17", "", "", ""},
+                {"18", "", "", ""},
+                {"19", "", "", ""},
+                {"20", "", "", ""},
+                {"21", "", "", ""},
+                {"22", "", "", ""},
+                {"23", "", "", ""},
+                {"24", "", "", ""},
+                {"25", "", "", ""},
+                {"26", "", "", ""},
+                {"27", "", "", ""},
+                {"28", "", "", ""},
+                {"29", "", "", ""},
+                {"30", "", "", ""}
+
+        };
+        String[] columnNames = {"S/no.", "Decimal Number", "Binary Number", "Remarks"};
+
+        t = new JTable(data, columnNames);
+        t.setBounds(30, 40, 200, 300);
+
+        JScrollPane sp = new JScrollPane(t);
+        f.add(sp);
+        f.setSize(700, 700);
+        f.setVisible(true);
+
+        float [] dec = new float[50];
+        String [] bin = new String[50];
+        boolean [] val = new boolean[50];
+        
+        
+        for (int j = 0; j < 30; j++){
+            dec[j] = (float) round(generate(),3);
+            data[j][1] = String.valueOf(dec[j]);
+
+            bin[j] = findBinary(dec[j]);
+            data[j][2] = bin[j];
+
+            val[j] = (boolean) isExactFloat(5);
+            data[j][3] = String.valueOf(val[j]);
+
+        }
+
+    }
+
+
+    public static boolean isExactFloat(double val) {
+
+        int exp2 = Math.getExponent(val);
+        int exp10 = (int) Math.floor(Math.log10(Math.abs(val)));
+
+        // check for any mismatch between the exact decimal and
+        // the round-trip representation.
+        int rightmost_bits = (52 - exp2) - (16 - exp10);
+
+        // create bitmask for rightmost bits
+        long mask = (1L << rightmost_bits) - 1;
+
+        // test if all rightmost bits are 0's (i.e., no rounding)
+        return (Double.doubleToLongBits(val) & mask) == 0;
+    }
+
+    private static String findBinary(double num) {
+        StringBuilder binaryBuilder = new StringBuilder();
+        int numIntegral = (int) num;
+        double numFractional = num - numIntegral;
+
+        // binary conversion for the integral part
+        while (numIntegral > 0) {
+            binaryBuilder.append(numIntegral % 2);
+            numIntegral /= 2;
+        }
+
+        binaryBuilder.reverse();
+
+        // binary conversion for the fractional part
+        if (numFractional != 0) {
+            binaryBuilder.append(".");
+
+            while (numFractional != 0) {
+                numFractional *= 2;
+                binaryBuilder.append((int) numFractional);
+                numFractional = numFractional - (int) numFractional;
+            }
+        }
+
+        return binaryBuilder.toString();
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    public static float generate(){
+        Random rd = new Random(); // creating Random object
+        float show = rd.nextFloat(100);
+        return show;
+    }
+
+
+    public static void main(String[] args)
+    {
+        new Tablozer();
+
+    }
+
