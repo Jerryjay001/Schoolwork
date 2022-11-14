@@ -1,0 +1,76 @@
+
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.JFrame;
+
+public class Q2converter extends JFrame implements ActionListener{
+
+
+    JLabel LB,LH,LD,LO;
+    JTextField TD,TB,TH;
+    JButton Run,clear;
+    JPanel c;
+    public Q2converter(){
+        LD =new JLabel("Decimal Value:");
+        LB =new JLabel("Binary Value:");
+        LH =new JLabel("Hexadecimal Value:");
+
+        TD =new JTextField(20);
+        TB =new JTextField(20);
+        TH =new JTextField(20);
+
+        clear =new JButton("clear");
+        Run =new JButton("Run");
+
+        c= new JPanel ();
+        c.setLayout(new GridLayout(4,7));
+
+        c.add(TB);
+        c.add(LB);
+
+        c.add(TH);
+        c.add(LH);
+
+        c.add(TD);
+        c.add(LD);
+
+        c.add(Run);
+        c.add(clear);
+
+        add (c);
+        setTitle("Binary Conversion");
+        setSize(1100,600);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+        clear.addActionListener(this);
+        Run.addActionListener(this);
+
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+
+        JButton btn = (JButton) ae.getSource();
+        if (btn == Run) {
+            int n = Integer.parseInt(TD.getText());
+            TB.setText(Integer.toBinaryString(n));
+            TH.setText(Integer.toHexString(n));
+        }
+
+        if (btn == clear) {
+            TD.setText("");
+            TB.setText("");
+            TH.setText("");
+
+        }}
+
+
+
+    public static void main(String[] args) {
+        new Q2converter();
+    }}
+
+}
